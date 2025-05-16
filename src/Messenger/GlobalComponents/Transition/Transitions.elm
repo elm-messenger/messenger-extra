@@ -17,7 +17,7 @@ module Messenger.GlobalComponents.Transition.Transitions exposing
 
 import Color
 import Messenger.GlobalComponents.Transition.Base exposing (DoubleTrans, SingleTrans)
-import REGL
+import REGL.Common exposing (Renderable)
 import REGL.BuiltinPrograms as P
 import REGL.Compositors as Comp
 
@@ -66,14 +66,14 @@ fadeInWithColor c r t =
 
 {-| Fade out transition with a renderable.
 -}
-fadeOutWithRenderable : REGL.Renderable -> SingleTrans
+fadeOutWithRenderable : Renderable -> SingleTrans
 fadeOutWithRenderable c r t =
     Comp.linearFade t r c
 
 
 {-| Fade in transition with a renderable.
 -}
-fadeInWithRenderable : REGL.Renderable -> SingleTrans
+fadeInWithRenderable : Renderable -> SingleTrans
 fadeInWithRenderable c r t =
     Comp.linearFade t c r
 

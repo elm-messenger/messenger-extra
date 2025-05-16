@@ -16,7 +16,7 @@ module Messenger.GlobalComponents.Transition.Base exposing
 -}
 
 import Duration exposing (Duration)
-import REGL exposing (Renderable)
+import REGL.Common exposing (Renderable)
 
 
 {-| Single Transition

@@ -21,7 +21,8 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.GlobalComponents.Transition.Base exposing (DoubleTrans, MixTransition, NoMixTransition, SingleTrans, Transition(..), genMixTransition, genNoMixTransition)
 import Messenger.Scene.Scene exposing (AbstractScene(..), ConcreteGlobalComponent, GCTarget, GlobalComponentInit, GlobalComponentStorage, GlobalComponentUpdate, GlobalComponentUpdateRec, GlobalComponentView, MAbstractScene, SceneOutputMsg(..), updateResultRemap)
 import Messenger.Scene.VSR exposing (VSR, updateVSR, viewVSR)
-import REGL exposing (Renderable)
+import REGL.Common exposing (Renderable, group)
+import REGL
 
 
 {-| Options
@@ -167,7 +168,7 @@ updateMix trans0 env evnt data bdata =
 
                     pp : Renderable -> Renderable
                     pp ren =
-                        REGL.group []
+                        group []
                             [ trans0.trans oldSceneView ren progress
                             ]
                 in

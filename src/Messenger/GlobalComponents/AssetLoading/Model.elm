@@ -12,7 +12,7 @@ import Color
 import Json.Encode as E
 import Messenger.Component.GlobalComponent exposing (genGlobalComponent)
 import Messenger.Scene.Scene exposing (ConcreteGlobalComponent, GCTarget, GlobalComponentInit, GlobalComponentStorage, GlobalComponentUpdate, GlobalComponentUpdateRec, GlobalComponentView)
-import REGL
+import REGL.Common exposing (group)
 import REGL.BuiltinPrograms as P
 
 
@@ -51,7 +51,7 @@ updaterec env _ data bdata =
 
 view : GlobalComponentView userdata scenemsg Data
 view env _ _ =
-    REGL.group []
+    group []
         (P.clear Color.black
             :: List.map
                 (\i ->
