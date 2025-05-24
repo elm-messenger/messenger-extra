@@ -12,8 +12,8 @@ import Color
 import Json.Encode as E
 import Messenger.Component.GlobalComponent exposing (genGlobalComponent)
 import Messenger.Scene.Scene exposing (ConcreteGlobalComponent, GCTarget, GlobalComponentInit, GlobalComponentStorage, GlobalComponentUpdate, GlobalComponentUpdateRec, GlobalComponentView)
-import REGL.Common exposing (group)
 import REGL.BuiltinPrograms as P
+import REGL.Common exposing (group)
 
 
 {-| Init Options

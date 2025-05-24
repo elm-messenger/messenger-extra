@@ -42,7 +42,7 @@ import Messenger.Base exposing (Env, UserEvent, addCommonData, removeCommonData)
 import Messenger.Component.Component exposing (AbstractComponent, ConcreteUserComponent)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..), abstract)
 import Messenger.Scene.Scene exposing (MMsg, SceneOutputMsg(..))
-import REGL exposing (Renderable)
+import REGL.Common exposing (Renderable)
 
 
 {-| Portable component init type sugar

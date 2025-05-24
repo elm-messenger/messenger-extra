@@ -17,8 +17,8 @@ module Messenger.GlobalComponents.Transition.Transitions exposing
 
 import Color
 import Messenger.GlobalComponents.Transition.Base exposing (DoubleTrans, SingleTrans)
-import REGL.Common exposing (Renderable)
 import REGL.BuiltinPrograms as P
+import REGL.Common exposing (Renderable)
 import REGL.Compositors as Comp
 
 
