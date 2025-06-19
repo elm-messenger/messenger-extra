@@ -21,7 +21,7 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.GlobalComponents.Transition.Base exposing (DoubleTrans, MixTransition, NoMixTransition, SingleTrans, Transition(..), genMixTransition, genNoMixTransition)
 import Messenger.Scene.Scene exposing (AbstractScene(..), ConcreteGlobalComponent, GCTarget, GlobalComponentInit, GlobalComponentStorage, GlobalComponentUpdate, GlobalComponentUpdateRec, GlobalComponentView, MAbstractScene, SceneOutputMsg(..), updateResultRemap)
 import Messenger.Scene.VSR exposing (VSR, updateVSR, viewVSR)
-import REGL
+import REGL.BuiltinPrograms as P
 import REGL.Common exposing (Renderable, group)
 
 
@@ -158,7 +158,7 @@ updateMix trans0 env evnt data bdata =
                     oldSceneView =
                         case data2.vsr of
                             Nothing ->
-                                REGL.empty
+                                P.empty
 
                             Just vsr ->
                                 viewVSR vsr
@@ -243,7 +243,7 @@ updaterec env _ data bdata =
 
 view : GlobalComponentView userdata scenemsg (Data userdata scenemsg)
 view _ _ _ =
-    REGL.empty
+    P.empty
 
 
 gcCon : InitOption scenemsg -> ConcreteGlobalComponent (Data userdata scenemsg) userdata scenemsg
