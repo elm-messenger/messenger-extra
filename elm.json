@@ -12,8 +12,7 @@
         ],
         "Misc": [
             "Messenger.Misc.KeyCode",
-            "Messenger.Misc.RNG",
-            "Messenger.Scene.VSR"
+            "Messenger.Misc.RNG"
         ],
         "GlobalComponents": [
             "Messenger.GlobalComponents.FPS.Model",
@@ -31,7 +30,7 @@
         "elm/random": "1.0.0 <= v < 2.0.0",
         "ianmackenzie/elm-units": "2.10.0 <= v < 3.0.0",
         "linsyking/elm-regl": "10.0.0 <= v < 11.0.0",
-        "linsyking/messenger-core": "17.1.2 <= v < 18.0.0"
+        "linsyking/messenger-core": "18.0.0 <= v < 19.0.0"
     },
     "test-dependencies": {}
 }

@@ -10,7 +10,7 @@ A Global Component to show initial loading screen.
 
 import Color
 import Json.Encode as E
-import Messenger.Base exposing (getLoadingProgress, getVirtualSize)
+import Messenger.Base exposing (getGlobalStartTime, getLoadingProgress, getVirtualSize)
 import Messenger.Component.GlobalComponent exposing (genGlobalComponent)
 import Messenger.Scene.Scene exposing (ConcreteGlobalComponent, GCTarget, GlobalComponentInit, GlobalComponentStorage, GlobalComponentUpdate, GlobalComponentUpdateRec, GlobalComponentView)
 import REGL.BuiltinPrograms as P
@@ -70,7 +70,7 @@ view env _ _ =
                         y =
                             15 * sin ((pi / 4) * toFloat i)
                     in
-                    P.circle ( 30 + x, virtualHeight - 30 + y ) (2 + sin (env.globalData.globalStartTime * 0.005 + 2 * pi * toFloat i / 8)) Color.white
+                    P.circle ( 30 + x, virtualHeight - 30 + y ) (2 + sin (getGlobalStartTime env.globalData * 0.005 + 2 * pi * toFloat i / 8)) Color.white
                 )
                 (List.range 0 7)
         )
