@@ -33,7 +33,7 @@ type alias Data =
 
 
 init : InitOption -> GlobalComponentInit userdata scenemsg Data
-init opt _ _ =
+init opt _ _ _ =
     ( { lastTenTime = []
       , fps = 0
       , size = opt.fontSize
@@ -46,7 +46,7 @@ init opt _ _ =
 
 
 update : GlobalComponentUpdate userdata scenemsg Data
-update env evnt data bdata =
+update _ env evnt data bdata =
     case evnt of
         Tick delta ->
             let
@@ -72,12 +72,12 @@ update env evnt data bdata =
 
 
 updaterec : GlobalComponentUpdateRec userdata scenemsg Data
-updaterec env _ data bdata =
+updaterec _ env _ data bdata =
     ( ( data, bdata ), [], env )
 
 
 view : GlobalComponentView userdata scenemsg Data
-view _ data _ =
+view _ _ data _ =
     P.textbox ( 0, 0 ) data.size ("FPS: " ++ String.fromInt (floor data.fps)) data.font (Color.rgba 0 0 0 0.5)
 
 

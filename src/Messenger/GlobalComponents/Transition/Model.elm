@@ -44,7 +44,7 @@ type alias Data userdata scenemsg =
 
 
 init : InitOption scenemsg -> GlobalComponentInit userdata scenemsg (Data userdata scenemsg)
-init opts _ _ =
+init opts _ _ _ =
     ( { preScene = Nothing
       , transition = opts.transition
       , scene = opts.scene
@@ -77,7 +77,7 @@ remap ( som, env ) =
 
 
 update : GlobalComponentUpdate userdata scenemsg (Data userdata scenemsg)
-update env evnt data bdata =
+update runtime env evnt data bdata =
     let
         trans0 =
             data.transition
@@ -96,10 +96,10 @@ update env evnt data bdata =
     in
     case trans0 of
         MTransition t ->
-            updateMix t env1 evnt data1 bdata
+            updateMix t runtime env1 evnt data1 bdata
 
         NMTransition t ->
-            updateNoMix t env1 evnt data1 bdata
+            updateNoMix t runtime env1 evnt data1 bdata
 
 
 max1 : Float -> Float
@@ -112,7 +112,7 @@ max1 a =
 
 
 updateMix : MixTransition -> GlobalComponentUpdate userdata scenemsg (Data userdata scenemsg)
-updateMix trans0 env evnt data bdata =
+updateMix trans0 runtime env evnt data bdata =
     let
         ( scene, scenemsg ) =
             data.scene
@@ -139,7 +139,7 @@ updateMix trans0 env evnt data bdata =
                     case data.vsr of
                         Nothing ->
                             -- Save the current scene
-                            ( { data | vsr = Just (VSR (removeCommonData env) env.commonData) }
+                            ( { data | vsr = Just (VSR (removeCommonData env) runtime env.commonData) }
                             , [ Parent <| SOMMsg <| SOMChangeScene scenemsg scene ]
                             )
 
@@ -179,7 +179,7 @@ updateMix trans0 env evnt data bdata =
 
 
 updateNoMix : NoMixTransition -> GlobalComponentUpdate userdata scenemsg (Data userdata scenemsg)
-updateNoMix trans0 env evnt data bdata =
+updateNoMix trans0 _ env evnt data bdata =
     case evnt of
         Tick delta ->
             let
@@ -237,12 +237,12 @@ updateNoMix trans0 env evnt data bdata =
 
 
 updaterec : GlobalComponentUpdateRec userdata scenemsg (Data userdata scenemsg)
-updaterec env _ data bdata =
+updaterec _ env _ data bdata =
     ( ( data, bdata ), [], env )
 
 
 view : GlobalComponentView userdata scenemsg (Data userdata scenemsg)
-view _ _ _ =
+view _ _ _ _ =
     P.empty
 
 

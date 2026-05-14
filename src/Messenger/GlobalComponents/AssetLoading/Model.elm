@@ -28,7 +28,7 @@ type alias Data =
 
 
 init : InitOption -> GlobalComponentInit userdata scenemsg Data
-init _ _ _ =
+init _ _ _ _ =
     ( {}
     , { dead = False
       , postProcessor = identity
@@ -37,10 +37,10 @@ init _ _ _ =
 
 
 update : GlobalComponentUpdate userdata scenemsg Data
-update env _ data bdata =
+update runtime env _ data bdata =
     let
         ( loadedResNum, totResNum ) =
-            getLoadingProgress env.globalData
+            getLoadingProgress runtime
 
         dead =
             loadedResNum == totResNum
@@ -49,15 +49,15 @@ update env _ data bdata =
 
 
 updaterec : GlobalComponentUpdateRec userdata scenemsg Data
-updaterec env _ data bdata =
+updaterec _ env _ data bdata =
     ( ( data, bdata ), [], env )
 
 
 view : GlobalComponentView userdata scenemsg Data
-view env _ _ =
+view runtime env _ _ =
     let
         ( _, virtualHeight ) =
-            getVirtualSize env.globalData
+            getVirtualSize runtime
     in
     group []
         (P.clear Color.black
@@ -70,7 +70,7 @@ view env _ _ =
                         y =
                             15 * sin ((pi / 4) * toFloat i)
                     in
-                    P.circle ( 30 + x, virtualHeight - 30 + y ) (2 + sin (getGlobalStartTime env.globalData * 0.005 + 2 * pi * toFloat i / 8)) Color.white
+                    P.circle ( 30 + x, virtualHeight - 30 + y ) (2 + sin (getGlobalStartTime runtime * 0.005 + 2 * pi * toFloat i / 8)) Color.white
                 )
                 (List.range 0 7)
         )
