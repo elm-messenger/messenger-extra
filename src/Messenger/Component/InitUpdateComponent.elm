@@ -36,25 +36,25 @@ resMap ( ( a, b ), c, d ) e =
 toConcreteUserComponent : ConcreteIUComponent cdata data userdata tar msg bdata scenemsg -> ConcreteUserComponent ( data, Bool ) cdata userdata tar msg bdata scenemsg
 toConcreteUserComponent comp =
     let
-        newInit env msg =
+        newInit runtime env msg =
             let
                 ( newdata, newbdata ) =
-                    comp.init env msg
+                    comp.init runtime env msg
             in
             ( ( newdata, False ), newbdata )
 
-        newUpdate env evnt ( data, inited ) bdata =
+        newUpdate runtime env evnt ( data, inited ) bdata =
             if inited then
-                resMap (comp.update env evnt data bdata) True
+                resMap (comp.update runtime env evnt data bdata) True
 
             else
-                resMap (comp.initUpdate env evnt data bdata) True
+                resMap (comp.initUpdate runtime env evnt data bdata) True
 
-        newUpdateRec env evnt ( data, inited ) bdata =
-            resMap (comp.updaterec env evnt data bdata) inited
+        newUpdateRec runtime env evnt ( data, inited ) bdata =
+            resMap (comp.updaterec runtime env evnt data bdata) inited
 
-        newView env ( data, _ ) bdata =
-            comp.view env data bdata
+        newView runtime env ( data, _ ) bdata =
+            comp.view runtime env data bdata
 
         newMatcher ( data, _ ) bdata t =
             comp.matcher data bdata t

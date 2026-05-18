@@ -38,7 +38,7 @@ list of user components.
 
 -}
 
-import Messenger.Base exposing (Env, UserEvent, addCommonData, removeCommonData)
+import Messenger.Base exposing (Env, Runtime, UserEvent, addCommonData, removeCommonData)
 import Messenger.Component.Component exposing (AbstractComponent, ConcreteUserComponent)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..), abstract)
 import Messenger.Scene.Scene exposing (MMsg, SceneOutputMsg(..))
@@ -48,31 +48,31 @@ import REGL.Common exposing (Renderable)
 {-| Portable component init type sugar
 -}
 type alias PortableComponentInit userdata msg data =
-    Env () userdata -> msg -> data
+    Runtime -> Env () userdata -> msg -> data
 
 
 {-| Portable component update type sugar
 -}
 type alias PortableComponentUpdate data userdata tar msg scenemsg =
-    Env () userdata -> UserEvent -> data -> ( data, List (MMsg tar msg scenemsg userdata), ( Env () userdata, Bool ) )
+    Runtime -> Env () userdata -> UserEvent -> data -> ( data, List (MMsg tar msg scenemsg userdata), ( Env () userdata, Bool ) )
 
 
 {-| Portable component updaterec type sugar
 -}
 type alias PortableComponentUpdateRec data userdata tar msg scenemsg =
-    Env () userdata -> msg -> data -> ( data, List (MMsg tar msg scenemsg userdata), Env () userdata )
+    Runtime -> Env () userdata -> msg -> data -> ( data, List (MMsg tar msg scenemsg userdata), Env () userdata )
 
 
 {-| Portable component view type sugar
 -}
 type alias PortableComponentView userdata data =
-    Env () userdata -> data -> Renderable
+    Runtime -> Env () userdata -> data -> Renderable
 
 
 {-| Portable component storage as a specific component type sugar
 -}
 type alias PortableComponentStorage cdata userdata gtar gmsg bdata scenemsg =
-    gmsg -> Env cdata userdata -> AbstractComponent cdata userdata gtar gmsg bdata scenemsg
+    gmsg -> Runtime -> Env cdata userdata -> AbstractComponent cdata userdata gtar gmsg bdata scenemsg
 
 
 {-| ConcretePortableComponent
@@ -81,7 +81,8 @@ Used when createing a portable component.
 
 Use `translatePortableComponent` to create a `ConcreteUserComponent` from a `ConcretePortableComponent`.
 
-The `scenemsg` type is replaced by `()` because you cannot send changescene message.
+Portable components still keep the scene-message type parameter, so they can pass
+through parent/system messages such as `SOMMsg`s after translation.
 
 -}
 type alias ConcretePortableComponent data userdata tar msg scenemsg =
@@ -108,22 +109,22 @@ translatePortableComponent pcomp tarcodec msgcodec emptyBaseData zindex =
         msgMDecoder =
             genMsgDecoder msgcodec tarcodec
     in
-    { init = \env gmsg -> ( pcomp.init (removeCommonData env) (msgcodec.encode gmsg), emptyBaseData )
+    { init = \runtime env gmsg -> ( pcomp.init runtime (removeCommonData env) (msgcodec.encode gmsg), emptyBaseData )
     , update =
-        \env evt data baseData ->
+        \runtime env evt data baseData ->
             let
                 ( resData, resMsg, ( resEnv, resBlock ) ) =
-                    pcomp.update (removeCommonData env) evt data
+                    pcomp.update runtime (removeCommonData env) evt data
             in
             ( ( resData, baseData ), List.map msgMDecoder resMsg, ( addCommonData env.commonData resEnv, resBlock ) )
     , updaterec =
-        \env gmsg data baseData ->
+        \runtime env gmsg data baseData ->
             let
                 ( resData, resMsg, resEnv ) =
-                    pcomp.updaterec (removeCommonData env) (msgcodec.encode gmsg) data
+                    pcomp.updaterec runtime (removeCommonData env) (msgcodec.encode gmsg) data
             in
             ( ( resData, baseData ), List.map msgMDecoder resMsg, addCommonData env.commonData resEnv )
-    , view = \env data _ -> ( pcomp.view (removeCommonData env) data, zindex )
+    , view = \runtime env data _ -> ( pcomp.view runtime (removeCommonData env) data, zindex )
     , matcher = \data _ gtar -> pcomp.matcher data <| tarcodec.encode gtar
     }
 
